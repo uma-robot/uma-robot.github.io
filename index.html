@@ -87,9 +87,11 @@
       <div class="tagline" id="method">Unified Motion Action Modeling</div>
       <div class="section">
         <p>
-          UMA represents object motion through 3D keypoints sampled on object surfaces and tracked across time,
-          a structured yet generic representation bridging dynamics modeling and visuomotor control,
-          obtainable from monocular video and defined independently of any specific embodiment.
+          UMA represents object motion as 3D keypoints sampled on object surfaces and tracked across time: a structured yet generic representation obtainable from monocular video, and independent of any specific embodiment. 
+          During pre-training,
+          a flow matching objective predicts randomly masked object motion and robot actions, conditioned on a
+          task latent and visual observation, while a contrastive loss on the task encoder keeps the task
+          representation semantically consistent, enabling versatile task conditioning and adaptation at deployment.
         </p>
         <figure>
           <img src="static/images/architecture.png" alt="UMA architecture showing masked flow matching over object motion and action tokens, alongside a task encoder trained with flow matching and contrastive objectives.">
@@ -100,10 +102,10 @@
             flow-matching and contrastive objectives to ensure semantic consistency of the learned task representation.
           </p> -->
         </figure>
-        <p>
+        <!-- <p>
           UMA is is trained with a flow matching objective to predict randomly
           masked object motion and robot actions, conditioned on a task latent and visual observation. We additionally supervise the task encoder with contrastive loss to ensure semantic consistency of the learned task representation, enabling versatile task conditioning and adaptation at deployment.
-        </p>
+        </p> -->
         <!-- <p>
           <b>Task latent consistency.</b>
           Hindsight-relabeled reference motions and a contrastive objective disentangle task intent from
@@ -116,31 +118,6 @@
           motion-based dynamics modeling; soft prompt tuning of the task latent adapts to new tasks from a
           few demonstrations.
         </p> -->
-      </div>
-
-      <div class="section-subtitle">Real-World Data Pipeline</div>
-      <div class="section">
-        <p>
-          A four-stage pipeline extracts 3D keypoint trajectory supervision from monocular RGB videos, with no
-          ground-truth depth, camera intrinsics, or action labels: MegaSaM estimates cameras and depth, UniDepth
-          aligns depth to metric scale, a vision-language model with SAM&nbsp;3 segments the task-relevant
-          object, and TAPIP3D tracks the sampled keypoints.
-        </p>
-        <figure>
-          <img src="static/images/data_pipeline.png" alt="Data pipeline: MegaSaM and UniDepth recover metric RGBD video, a VLM and SAM 3 identify and segment target objects, keypoints are sampled, and TAPIP3D extracts 3D motion trajectories.">
-        </figure>
-      </div>
-
-      <div class="section-subtitle">Masked DiT Blocks</div>
-      <div class="section">
-        <p>
-          The UMA policy backbone consist of Masked DiT blocks, each applying adaptive layer norm with two independent sets of modulation
-          parameters, one for masked target tokens and one for clean conditioning. To exploit the spatial-temporal sparsity, we factorize attention
-          into spatial, temporal, and context patterns rather than dense global attention.
-        </p>
-        <figure class="figure-narrow">
-          <img src="static/images/masked_dit.png" alt="Masked DiT block: adaptive layer norm with separate modulation parameters for masked target tokens and unmasked given tokens, conditioned on the diffusion timestep.">
-        </figure>
       </div>
 
       <!-- ================= RESULTS ================= -->
@@ -280,7 +257,6 @@
         <figure>
           <img src="static/images/task_specification.png" alt="Left: language encoder mapping a text instruction through SigLIP2 and a transformer to task tokens. Right: goal-conditioned pipeline using SAM 3 segmentation and RoMa v2 matching to build a start-to-end reference motion.">
         </figure>
-
         <p>
           Since UMA is trained with a semantically meaningful task encoder with contrastive loss, replacing the task latent conditions the same pretrained model on alternative task specifications without fine-tuning: language-conditioned control derives the task latent from a text
           instruction via a SigLIP&nbsp;2 text encoder, and goal-conditioned control converts a goal image

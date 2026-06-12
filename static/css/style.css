@@ -73,7 +73,7 @@ header.full-page-image .bottom-overlay h1 {
 .authors a:hover { text-decoration: underline; }
 
 /* TAGLINES / SUBTITLES */
-.tagline { font-family: 'Roboto Mono', monospace; font-size: 24px; background: #000; color: #fff; display: inline-block; padding: 8px 16px; margin: 40px 0; }
+.tagline { font-family: 'Roboto Mono', monospace; font-size: 24px; background: #000; color: #fff; display: inline-block; padding: 8px 16px; margin: 40px 0 0px; }
 .section-subtitle { font-family: 'Roboto Mono', monospace; font-size: 20px; background: #000; color: #fff; display: table; padding: 6px 14px; margin: 30px 0 10px; }
 
 /* QUICK LINKS */
