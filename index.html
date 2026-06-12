@@ -11,451 +11,413 @@
         content="3D object motion as a shared interface bridging visuomotor control and dynamics modeling across heterogeneous data sources.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="static/images/teaser.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
 </head>
 <body>
+  <div id="content" style="display:block;">
 
-<header class="hero" id="top">
-  <div class="container">
-    <h1 class="title">
-      Unified Motion-Action Modeling for<br class="wide-only">
-      Heterogeneous Robot Learning
-    </h1>
-    <!-- Replace with the real author list for the camera-ready version. -->
-    <p class="authors">Anonymous Authors</p>
-    <p class="affiliation">Under review</p>
-
-    <div class="hero-buttons">
-      <a class="btn" href="#" title="Coming soon">
-        <svg viewBox="0 0 24 24"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6a10.9 10.9 0 0 0 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
-        Code (coming soon)
-      </a>
-      <!-- BibTeX button (restore together with the BibTeX section below)
-      <a class="btn" href="#bibtex">
-        <svg viewBox="0 0 24 24"><path d="M7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7zM5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm0 2h14v14H5V5z"/></svg>
-        BibTeX
-      </a>
-      -->
-    </div>
-  </div>
-</header>
-
-<main>
-
-  <!-- Teaser -->
-  <section class="section">
-    <div class="container">
-      <figure class="figure">
-        <img src="static/images/teaser.png" alt="UMA overview showing training on videos without actions, real robot data, and simulated robot data, with inference for visuomotor control, dynamics modeling, and task inference.">
-        <figcaption>
-          <strong>UMA</strong> models object motion and robot actions jointly under a masked generative
-          objective. The mask pattern selects the supervision regime during pretraining and the inference mode
-          at deployment, letting one model learn from videos without actions, real robot data, and simulation,
-          then serve multiple roles at test time.
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- Abstract -->
-  <section class="section section-alt" id="abstract">
-    <div class="container narrow">
-      <h2>Abstract</h2>
-      <p class="abstract-text">
-        We present the Unified Motion-Action (UMA) Model, which uses 3D object motion trajectories as a shared
-        interface for visuomotor control and dynamics modeling. UMA models object motion and robot actions
-        jointly under a masked generative objective. The mask pattern determines both the supervision regime
-        during pretraining and the inference mode at deployment. Using relabeled motion contexts and a
-        contrastive objective that separates task intent from scene geometry, UMA supports pretraining across
-        diverse data sources without manually annotated task instructions. At deployment, the same pretrained
-        parameters support visuomotor control conditioned on motion, dynamics modeling from candidate actions,
-        and task adaptation from a few demonstrations. Pretrained on robot demonstrations, human videos, and
-        simulated data, UMA consistently outperforms leading baselines for each inference mode.
-      </p>
-    </div>
-  </section>
-
-  <!-- Method -->
-  <section class="section" id="method">
-    <div class="container">
-      <h2>Method</h2>
-      <p class="section-lead">
-        UMA represents object motion as 3D points sampled on object surfaces and tracked across time,
-        a representation that can be extracted from video without action labels, lives in the same spatial
-        coordinate system as robot controls, and remains comparable across embodiments.
-        A masked diffusion transformer jointly denoises motion and action tokens with a flow-matching
-        objective, conditioned on the observation and a task latent.
-      </p>
-      <figure class="figure">
-        <img src="static/images/architecture.png" alt="UMA architecture showing masked flow matching over object motion and action tokens, alongside a task encoder trained with flow matching and contrastive objectives.">
-        <figcaption>
-          <strong>Pretraining UMA.</strong> UMA predicts randomly masked object motion and robot actions,
-          conditioned on a task latent and visual observation. A task encoder compresses the reference motion
-          and initial observation into task tokens, trained with both flow matching and contrastive objectives
-          for semantic consistency.
-        </figcaption>
-      </figure>
-
-      <div class="cards">
-        <div class="card">
-          <h3>One objective, heterogeneous data</h3>
-          <p>
-            Both motion and actions can serve as conditioning or as target depending on the mask pattern.
-            Robot demonstrations supervise both streams; action-free human videos and cross-embodiment data
-            still supervise the motion stream, so no source is wasted.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Disentangled task latent</h3>
-          <p>
-            Relabeled reference motions and a SimCLR contrastive objective produce a task
-            latent that is invariant to keypoint sampling, temporal spacing, and SE(3) scene placement,
-            capturing task intent rather than scene geometry.
-          </p>
-        </div>
-        <div class="card">
-          <h3>Versatile inference</h3>
-          <p>
-            With weights fixed, changing the mask switches between visuomotor control conditioned on motion and
-            dynamics prediction conditioned on actions. Optimizing only the task latent enables adaptation from
-            a few demonstrations through soft prompt tuning, even from human videos without actions.
-          </p>
-        </div>
+    <!-- HERO -->
+    <header class="full-page-image" id="hero">
+      <video id="bg-video" preload="auto" autoplay muted playsinline loop poster="static/posters/folding_zero-shot.jpg">
+        <source src="static/videos/zero-shot/folding.mp4" type="video/mp4">
+      </video>
+      <div class="overlay"></div>
+      <div class="bottom-overlay" style="padding:0 24px;">
+        <h1>UMA<br>Unified Motion-Action Modeling for Heterogeneous Robot Learning</h1>
       </div>
-    </div>
-  </section>
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator" onclick="scrollToContent()">
+        ↓
+      </div>
+    </header>
 
-  <!-- Results -->
-  <section class="section section-alt" id="results">
-    <div class="container">
-      <h2>Zero-Shot Visuomotor Control</h2>
-      <p class="section-lead">
-        Pretrained on DROID demonstrations, human videos (HOI4D, Xperience), and simulated data, none of
-        which overlaps the test environments, UMA outperforms the strongest specialized baseline by
-        <strong>20–25 percentage points on every task</strong>, spanning 6-DoF manipulation, tool use, and
-        deformable objects. Predicted end-effector trajectories are overlaid in the rollout videos.
-      </p>
+    <!-- MAIN CONTENT BODY -->
+    <main class="main-content">
 
-      <div class="video-grid cols-3">
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/insertion_zero-shot.jpg">
-            <source src="static/videos/zero-shot/insertion.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Insertion.</strong> 6-DoF rigid-object manipulation</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/sweeping_zero-shot.jpg">
-            <source src="static/videos/zero-shot/sweeping.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Sweeping.</strong> Tool use</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/folding_zero-shot.jpg">
-            <source src="static/videos/zero-shot/folding.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Folding.</strong> Deformable object manipulation</p>
-        </div>
+      <div class="sub-hero-text">Unified Motion-Action Modeling for Heterogeneous Robot Learning</div>
+
+      <!-- Replace with the real author list for the camera-ready version. -->
+      <div class="authors">
+        Anonymous Authors
+        <div class="affiliation">Under review</div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- Dynamics -->
-  <section class="section">
-    <div class="container">
-      <h2>Predicting Dynamics from Motion</h2>
-      <p class="section-lead">
-        Conditioned on candidate actions, the same pretrained model predicts the resulting object motion.
-        This supports model predictive control and exposes whether predicted dynamics match the task intent
-        before any action is executed. UMA reduces average prediction error from
-        <strong>0.054 (Point-World) to 0.042</strong>, and removing simulated data from pretraining
-        increases error by nearly <strong>5&times;</strong>.
-      </p>
-
-      <div class="video-grid cols-2">
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/insertion_dynamics.jpg">
-            <source src="static/videos/dynamics/insertion.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Insertion.</strong> Motion rollout conditioned on actions</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/folding_dynamics.jpg">
-            <source src="static/videos/dynamics/folding.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Folding.</strong> Motion rollout conditioned on actions</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/sweeping_1_dynamics.jpg">
-            <source src="static/videos/dynamics/sweeping_1.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Sweeping.</strong> Motion rollout conditioned on actions</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/sweeping_2_dynamics.jpg">
-            <source src="static/videos/dynamics/sweeping_2.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Sweeping.</strong> Alternative configuration</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Few-shot -->
-  <section class="section section-alt">
-    <div class="container">
-      <h2>Adapting from a Few Demonstrations</h2>
-      <p class="section-lead">
-        UMA adapts to new tasks by optimizing only the task latent on 25 demonstrations while keeping
-        all model weights frozen. With action labels, it matches or beats &pi;<sub>0.5</sub>-LoRA and finetuned
-        UVA. With <strong>human videos alone and no action labels</strong>, it outperforms UVA by ~25 percentage
-        points on every task, without any robot data for the new task.
-      </p>
-
-      <div class="video-grid cols-2">
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/human_folding_few-shot.jpg">
-            <source src="static/videos/few-shot/human_folding.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Adapted from human videos.</strong> Folding with motion supervision</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/robot_insertion_few-shot.jpg">
-            <source src="static/videos/few-shot/robot_insertion.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Adapted from robot demos.</strong> Insertion with motion and action supervision</p>
-        </div>
+      <div class="quick-links">
+        <a href="#" title="Coming soon">[arxiv (coming soon)]</a>
+        <a href="#" title="Coming soon">[code (coming soon)]</a>
       </div>
 
-    </div>
-  </section>
-
-  <!-- Flexible task specification -->
-  <section class="section">
-    <div class="container">
-      <h2>Flexible Task Specification</h2>
-      <p class="section-lead">
-        Because the task latent captures intent in a disentangled space, UMA can be conditioned on alternative
-        task representations such as goal images or language instructions without retraining the policy.
-      </p>
-
-      <div class="video-grid cols-2">
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/goal_mug_conditioned.jpg">
-            <source src="static/videos/conditioned/goal_mug.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Goal-conditioned.</strong> Move the mug from the table to the shelf, specified by a goal image</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/language_cable_conditioned.jpg">
-            <source src="static/videos/conditioned/language_cable.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption"><strong>Language-conditioned.</strong> &ldquo;Put the cable in the container&rdquo;</p>
-        </div>
+      <!-- Overview video -->
+      <div class="main-video-container">
+        <video controls playsinline preload="metadata">
+          <source src="static/videos/UMA_Overview.mp4" type="video/mp4">
+        </video>
       </div>
-    </div>
-  </section>
 
-  <!-- Additional tasks -->
-  <section class="section section-alt" id="additional">
-    <div class="container">
-      <h2>Additional Tasks</h2>
-      <p class="section-lead">
-        UMA generalizes across a broad range of everyday objects and skills beyond the main evaluation suite.
-      </p>
-
-      <div class="video-grid cols-3">
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/mug_additional.jpg">
-            <source src="static/videos/additional/mug.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Move the mug from the table to the shelf</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/bread_additional.jpg">
-            <source src="static/videos/additional/bread.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Take the bread out of the toaster and place it in the container</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/cable_additional.jpg">
-            <source src="static/videos/additional/cable.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Put the cable in the container</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/shoe_additional.jpg">
-            <source src="static/videos/additional/shoe.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Put the shoe in the drawer</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/carrot_additional.jpg">
-            <source src="static/videos/additional/carrot.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Put the carrot in the basket</p>
-        </div>
-        <div class="video-card">
-          <video controls muted loop playsinline preload="none" poster="static/posters/toycar_additional.jpg">
-            <source src="static/videos/additional/toycar.mp4" type="video/mp4">
-          </video>
-          <p class="video-caption">Put the toy car in the drawer</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quantitative results -->
-  <section class="section" id="quantitative">
-    <div class="container">
-      <h2>Quantitative Results</h2>
-      <div class="figure-grid">
-        <figure class="figure">
-          <img src="static/images/zero_shot_visuomotor_control_avg.png" alt="Average zero-shot visuomotor control success rates: UMA at 83.3% outperforms UVA, COIL, and data-ablated variants.">
-          <figcaption>
-            <strong>Zero-shot visuomotor control.</strong> Success rate averaged over the three evaluation
-            tasks (20 trials each). UMA outperforms both COIL (motion-conditioned policy) and UVA
-            (pixel-action joint model) trained on the same data mixture.
-          </figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="static/images/zero_shot_motion_prediction_avg.png" alt="Average zero-shot dynamics prediction error (motion L2 distance): UMA at 0.042 outperforms Point-World at 0.054; removing simulated data degrades error to 0.208.">
-          <figcaption>
-            <strong>Zero-shot dynamics prediction.</strong> Motion prediction error (L2 distance) averaged
-            across tasks. UMA produces sharper dynamics than the dedicated Point-World model, and removing
-            simulated data from pretraining increases error by nearly 5&times;.
-          </figcaption>
-        </figure>
-        <figure class="figure figure-wide">
-          <img src="static/images/few_shot_adaptation_avg.png" alt="Average few-shot adaptation success rates with robot demonstrations (action supervision) and action-free human videos (motion supervision).">
-          <figcaption>
-            <strong>Few-shot adaptation.</strong> Success rate averaged across tasks when adapting on 25
-            demonstrations. UMA updates a low-dimensional task latent instead of millions of weights, yet
-            outperforms full finetuning baselines, including when only action-free human videos are available.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Ablation & scaling -->
-  <section class="section section-alt" id="ablation-scaling">
-    <div class="container">
-      <h2>Ablation &amp; Scaling Behavior</h2>
-      <p class="section-lead">
-        Joint motion-action prediction, a shared decoder head, and structured spatiotemporal attention each
-        contribute to performance, and success rates improve consistently with both data and model scale.
-      </p>
-      <div class="figure-grid">
-        <figure class="figure">
-          <img src="static/images/ablation.png" alt="Model design ablation: average success rates for Dense Attention, Action-only, Separate Heads, and UMA." class="img-square">
-          <figcaption>
-            <strong>Model design ablation.</strong> Success rate averaged over three simulated tasks
-            (100 episodes each). Jointly predicting motion alongside actions, a shared decoder head, and
-            structured spatiotemporal attention each contribute to the final performance.
-          </figcaption>
-        </figure>
-        <figure class="figure">
-          <img src="static/images/scale_bar_figure.png" alt="Scaling behavior: average success rate improves with both data scale (50% vs 100%) and parameter scale (300M vs 600M).">
-          <figcaption>
-            <strong>Scaling behavior.</strong> Success rate averaged over the simulated tasks (100 trials
-            each) when varying training data and model size. Both data scale and parameter scale contribute,
-            with the full-data 600M-parameter model performing best.
-          </figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- Method in detail -->
-  <section class="section" id="method-detail">
-    <div class="container">
-      <h2>Method in Detail</h2>
-
-      <div class="detail-block">
-        <h3>Extracting 3D Motion Supervision from Any Video</h3>
+      <!-- Abstract -->
+      <div class="tagline" id="abstract">Abstract</div>
+      <div class="section">
         <p>
-          UMA's pretraining data comes from monocular RGB videos, including robot demonstrations (DROID),
-          human videos (HOI4D, Xperience), and cross-embodiment sources, with no ground-truth depth, camera
-          intrinsics, or action labels required. A four-stage pipeline converts raw video into 3D keypoint
-          trajectories. <strong>First</strong>, MegaSaM jointly estimates per-frame camera poses, intrinsics,
-          and up-to-scale depth. <strong>Second</strong>, UniDepth anchors the depth sequence to metric scale
-          via a global scale-and-shift fit. <strong>Third</strong>, a vision-language model identifies the
-          task-relevant object and SAM&nbsp;3 segments it, after which keypoints are sampled densely on the
-          object surface plus sparsely in the background for scene context. <strong>Fourth</strong>, TAPIP3D
-          tracks the sampled points to produce persistent 3D keypoint trajectories that serve as motion
-          supervision.
+          We present Unified Motion-Action (UMA) Model, an approach that uses 3D object motion trajectories as a
+          shared interface to bridge visuomotor control and dynamics modeling. UMA treats object motion and robot
+          actions as co-evolving variables under a masked generative objective, in which the mask pattern
+          determines both the supervision regime during pretraining and the inference mode at deployment. Using
+          hindsight-relabeled motion contexts and a contrastive objective that disentangles task intent from
+          scene geometry, UMA enables multi-task pretraining across heterogeneous data sources without requiring
+          manually annotated task instructions. At deployment, the same pretrained parameters support
+          motion-conditioned visuomotor control, motion-based dynamics modeling, and task adaptation from
+          few-shot demonstrations. Pretrained on a mixture of robot demonstrations, human videos, and simulated
+          data, UMA consistently outperforms state-of-the-art baselines specialized for each inference mode.
         </p>
-        <figure class="figure">
+        <figure>
+          <!-- Plays once at 2x when scrolled into view, then swaps to the static teaser image (main.js). -->
+          <video id="teaser-video" muted playsinline preload="auto" poster="static/posters/teaser.jpg">
+            <source src="static/videos/teaser.mp4" type="video/mp4">
+          </video>
+          <img id="teaser-image" src="static/images/teaser.png" style="display:none;"
+               alt="UMA overview showing training on videos without actions, real robot data, and simulated robot data, with inference for visuomotor control, dynamics modeling, and task inference.">
+
+          <!-- <p class="figure-caption">
+            <b>Unified Motion-Action (UMA) Model.</b> UMA uses object motion as a shared interface for heterogeneous robot learning. Pretraining effectively combines action-free videos, real robot data, and simulated robot data by representing task intent, observations, object motion, and robot actions as tokens under a masked generative objective. The same pretrained parameters then flexibly support visuomotor control, dynamics modeling, and task inference at deployment.
+          </p> -->
+        </figure>
+      </div>
+
+      <!-- ================= METHOD ================= -->
+      <div class="tagline" id="method">Unified Motion Action Modeling</div>
+      <div class="section">
+        <p>
+          UMA represents object motion through 3D keypoints sampled on object surfaces and tracked across time,
+          a structured yet generic representation bridging dynamics modeling and visuomotor control,
+          obtainable from monocular video and defined independently of any specific embodiment.
+        </p>
+        <figure>
+          <img src="static/images/architecture.png" alt="UMA architecture showing masked flow matching over object motion and action tokens, alongside a task encoder trained with flow matching and contrastive objectives.">
+          <!-- <p class="figure-caption">
+            <b>Pre-training of UMA.</b> Left: UMA is trained with a flow matching objective to predict randomly
+            masked object motion and robot actions, conditioned on a task latent and visual observation.
+            Right: the reference motion and initial observation are encoded into task tokens, using both
+            flow-matching and contrastive objectives to ensure semantic consistency of the learned task representation.
+          </p> -->
+        </figure>
+        <p>
+          UMA is is trained with a flow matching objective to predict randomly
+          masked object motion and robot actions, conditioned on a task latent and visual observation. We additionally supervise the task encoder with contrastive loss to ensure semantic consistency of the learned task representation, enabling versatile task conditioning and adaptation at deployment.
+        </p>
+        <!-- <p>
+          <b>Task latent consistency.</b>
+          Hindsight-relabeled reference motions and a contrastive objective disentangle task intent from
+          scene geometry, making the task latent invariant to keypoint sampling, temporal spacing, and
+          absolute scene placement.
+        </p>
+        <p>
+          <b>Versatile inference.</b>
+          With the weights fixed, the mask switches between motion-conditioned visuomotor control and
+          motion-based dynamics modeling; soft prompt tuning of the task latent adapts to new tasks from a
+          few demonstrations.
+        </p> -->
+      </div>
+
+      <div class="section-subtitle">Real-World Data Pipeline</div>
+      <div class="section">
+        <p>
+          A four-stage pipeline extracts 3D keypoint trajectory supervision from monocular RGB videos, with no
+          ground-truth depth, camera intrinsics, or action labels: MegaSaM estimates cameras and depth, UniDepth
+          aligns depth to metric scale, a vision-language model with SAM&nbsp;3 segments the task-relevant
+          object, and TAPIP3D tracks the sampled keypoints.
+        </p>
+        <figure>
           <img src="static/images/data_pipeline.png" alt="Data pipeline: MegaSaM and UniDepth recover metric RGBD video, a VLM and SAM 3 identify and segment target objects, keypoints are sampled, and TAPIP3D extracts 3D motion trajectories.">
         </figure>
       </div>
 
-      <div class="detail-block">
-        <h3>Task Specification Beyond Reference Motion</h3>
+      <div class="section-subtitle">Masked DiT Blocks</div>
+      <div class="section">
         <p>
-          Because the contrastive objective trains the task latent to capture intent independently of the
-          modality that specifies it, alternative encoders can plug into the same latent space without
-          retraining the policy. For <strong>language-conditioned control</strong> (left), a SigLIP2 text
-          encoder and a lightweight aggregation transformer map an instruction directly to task tokens that
-          replace the motion-derived latent. For <strong>goal-conditioned control</strong> (right), SAM&nbsp;3
-          segments the described object in the initial and goal images, RoMa&nbsp;v2 matches points between
-          them, and the matches are lifted to 3D, yielding a sparse two-timestep reference motion that feeds
-          the standard motion-conditioned pathway.
+          The UMA policy backbone consist of Masked DiT blocks, each applying adaptive layer norm with two independent sets of modulation
+          parameters, one for masked target tokens and one for clean conditioning. To exploit the spatial-temporal sparsity, we factorize attention
+          into spatial, temporal, and context patterns rather than dense global attention.
         </p>
-        <figure class="figure">
+        <figure class="figure-narrow">
+          <img src="static/images/masked_dit.png" alt="Masked DiT block: adaptive layer norm with separate modulation parameters for masked target tokens and unmasked given tokens, conditioned on the diffusion timestep.">
+        </figure>
+      </div>
+
+      <!-- ================= RESULTS ================= -->
+
+      <!-- Zero-shot visuomotor control: qualitative + quantitative -->
+      <div class="tagline" id="zero-shot">Results: Zero-Shot Visuomotor Control</div>
+      <div class="section">
+        <p>
+          Pretrained on data that never overlaps the real-world test environments, UMA outperforms the
+          strongest baseline by 20&ndash;25 percentage points on every task, without task-specific
+          finetuning. Predicted end-effector trajectories are overlaid.
+        </p>
+      </div>
+
+      <div class="video-gallery-section" id="gallery-section-zeroshot">
+        <div class="video-gallery-container">
+          <div class="video-gallery" id="zeroShotGallery">
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/insertion_zero-shot.jpg">
+                <source src="static/videos/zero-shot/insertion_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Insertion.</b> 6-DoF manipulation</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/sweeping_zero-shot.jpg">
+                <source src="static/videos/zero-shot/sweeping_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Sweeping.</b> Tool use</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/folding_zero-shot.jpg">
+                <source src="static/videos/zero-shot/folding_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Folding.</b> Deformable object manipulation</p>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-caption-container">
+          <div class="gallery-nav-controls">
+            <button class="gallery-nav left" id="scrollLeftBtnZeroShot" aria-label="Scroll left">&lt;</button>
+            <button class="gallery-nav right" id="scrollRightBtnZeroShot" aria-label="Scroll right">&gt;</button>
+          </div>
+        </div>
+      </div>
+
+      <figure class="figure-chart">
+        <img src="static/images/zero_shot_visuomotor_control_avg.png" alt="Average zero-shot visuomotor control success rates: UMA at 83.3% outperforms UVA, COIL, and data-ablated variants.">
+        <p class="figure-caption">
+          Success rates for motion-conditioned visuomotor control, averaged over the three evaluation tasks (20 trials each).
+        </p>
+      </figure>
+
+      <!-- Dynamics: qualitative + quantitative -->
+      <div class="tagline" id="dynamics">Results: Dynamics Prediction</div>
+      <div class="section">
+        <p>
+          Given a candidate action sequence, the same model predicts the resulting object motion. UMA reduces motion-prediction MSE from 0.054 (PointWorld) to 0.042,
+          producing sharper dynamics than a dedicated dynamics model.
+        </p>
+      </div>
+
+      <div class="video-gallery-section" id="gallery-section-dynamics">
+        <div class="video-gallery-container">
+          <div class="video-gallery" id="dynamicsGallery">
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/insertion_dynamics_2x.jpg">
+                <source src="static/videos/dynamics/insertion_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Insertion.</b> Motion rollout conditioned on actions</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/folding_dynamics_2x.jpg">
+                <source src="static/videos/dynamics/folding_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Folding.</b> Motion rollout conditioned on actions</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/sweeping_1_dynamics_2x.jpg">
+                <source src="static/videos/dynamics/sweeping_1_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption"><b>Sweeping.</b> Motion rollout conditioned on actions</p>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-caption-container">
+          <div class="gallery-nav-controls">
+            <button class="gallery-nav left" id="scrollLeftBtnDynamics" aria-label="Scroll left">&lt;</button>
+            <button class="gallery-nav right" id="scrollRightBtnDynamics" aria-label="Scroll right">&gt;</button>
+          </div>
+        </div>
+      </div>
+
+      <figure class="figure-chart">
+        <img src="static/images/zero_shot_motion_prediction_avg.png" alt="Average zero-shot dynamics prediction error (mean squared error): UMA at 0.042 outperforms PointWorld at 0.054; removing simulated data degrades error to 0.208.">
+        <p class="figure-caption">
+          Mean squared error (MSE) of predicted object motion, averaged across real-world tasks; lower is better.
+        </p>
+      </figure>
+
+      <!-- Few-shot adaptation: qualitative + quantitative -->
+      <div class="tagline" id="few-shot">Results: Few-Shot Adaptation</div>
+      <div class="section">
+        <p>
+          UMA adapts to a new task by optimizing only the task latent on 25 demonstrations while keeping all
+          other parameters frozen. From action-free human videos alone, it outperforms UVA by approximately
+          25 percentage points on every task.
+        </p>
+      </div>
+
+      <div class="video-gallery-section" id="gallery-section-fewshot">
+        <div class="video-row" id="fewShotGallery">
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/human_folding_few-shot_2x.jpg">
+              <source src="static/videos/few-shot/human_folding_2x.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Adapted from human videos.</b> Folding with motion supervision</p>
+          </div>
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/robot_insertion_few-shot_2x.jpg">
+              <source src="static/videos/few-shot/robot_insertion_2x.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Adapted from robot demos.</b> Insertion with motion and action supervision</p>
+          </div>
+        </div>
+      </div>
+
+      <figure class="figure-chart">
+        <img src="static/images/few_shot_adaptation_avg.png" alt="Average few-shot adaptation success rates with robot demonstrations (action supervision) and action-free human videos (motion supervision).">
+        <p class="figure-caption">
+          Success rates for adapting to new tasks from 25 demonstrations under action supervision and motion supervision, averaged across tasks.
+        </p>
+      </figure>
+
+      <!-- Flexible task specification -->
+      <div class="tagline" id="task-specification">Results: Multimodal Task Conditioning</div>
+      <div class="section">
+        <figure>
           <img src="static/images/task_specification.png" alt="Left: language encoder mapping a text instruction through SigLIP2 and a transformer to task tokens. Right: goal-conditioned pipeline using SAM 3 segmentation and RoMa v2 matching to build a start-to-end reference motion.">
         </figure>
-      </div>
 
-      <div class="detail-block">
-        <h3>Masked DiT Blocks</h3>
         <p>
-          A single transformer pass must serve two conflicting roles. Target tokens (masked motion
-          or actions) need to be denoised from noise toward the data manifold, while given tokens
-          (clean conditioning) should pass through with minimal corruption. A standard DiT block applies one
-          set of adaLN modulation weights to all tokens, forcing a compromise. Masked DiT blocks instead
-          maintain two independent modulation parameter sets conditioned on the same diffusion timestep,
-          applying a denoising-appropriate scale and shift to targets while preserving clean conditioning
-          signals. Structured spatial, temporal, and context attention replaces dense global attention.
+          Since UMA is trained with a semantically meaningful task encoder with contrastive loss, replacing the task latent conditions the same pretrained model on alternative task specifications without fine-tuning: language-conditioned control derives the task latent from a text
+          instruction via a SigLIP&nbsp;2 text encoder, and goal-conditioned control converts a goal image
+          into a sparse start-to-end reference motion via SAM&nbsp;3 segmentation and RoMaV2 point matching.
         </p>
-        <figure class="figure">
-          <img src="static/images/masked_dit.png" alt="Masked DiT block: adaptive layer norm with separate modulation parameters for masked target tokens and unmasked given tokens, conditioned on the diffusion timestep." class="img-narrow">
-        </figure>
       </div>
-    </div>
-  </section>
 
-  <!-- BibTeX (commented out until camera-ready)
-  <section class="section" id="bibtex">
-    <div class="container narrow">
-      <h2>BibTeX</h2>
-      <div class="bibtex-box">
-        <button class="copy-btn" id="copy-bibtex" aria-label="Copy BibTeX">Copy</button>
-<pre><code id="bibtex-text">@article{anonymous2026uma,
+      <div class="video-gallery-section" id="gallery-section-conditioned">
+        <div class="video-row" id="conditionedGallery">
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/goal_mug_conditioned_2x.jpg">
+              <source src="static/videos/conditioned/goal_mug_2x.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Goal-conditioned.</b> Move the mug to the shelf, specified by a goal image</p>
+          </div>
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/language_cable_conditioned_2x.jpg">
+              <source src="static/videos/conditioned/language_cable_2x.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Language-conditioned.</b> &ldquo;Put the cable in the container&rdquo;</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional tasks -->
+      <div class="tagline" id="additional">Results: UMA in the Wild</div>
+      <div class="section">
+        <p>
+          UMA generalizes across everyday objects and skills beyond the main evaluation suite.
+        </p>
+      </div>
+
+      <div class="video-gallery-section" id="gallery-section-additional">
+        <div class="video-gallery-container">
+          <div class="video-gallery" id="additionalTasks">
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/mug_additional_2x.jpg">
+                <source src="static/videos/additional/mug_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Move the mug from the table to the shelf</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/bread_additional_2x.jpg">
+                <source src="static/videos/additional/bread_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Take the bread out of the toaster and place it in the container</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/cable_additional_2x.jpg">
+                <source src="static/videos/additional/cable_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Put the cable in the container</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/shoe_additional_2x.jpg">
+                <source src="static/videos/additional/shoe_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Put the shoe in the drawer</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/carrot_additional_2x.jpg">
+                <source src="static/videos/additional/carrot_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Put the carrot in the basket</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/toycar_additional_2x.jpg">
+                <source src="static/videos/additional/toycar_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Put the toy car in the drawer</p>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-caption-container">
+          <div class="gallery-nav-controls">
+            <button class="gallery-nav left" id="scrollLeftBtnAdditional" aria-label="Scroll left">&lt;</button>
+            <button class="gallery-nav right" id="scrollRightBtnAdditional" aria-label="Scroll right">&gt;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ablation & scaling -->
+      <div class="tagline" id="ablation-scaling">Results: Ablation &amp; Scaling</div>
+      <div class="section">
+        <figure class="figure-float-left figure-float-sm">
+          <img src="static/images/ablation.png" alt="Model design ablation: average success rates for Dense Attention, Action-only, Separate Heads, and UMA.">
+          <p class="figure-caption">
+            <b>Model design ablation</b> over three simulated tasks.
+          </p>
+        </figure>
+        <p>
+          We evaluate three architecture variants trained on simulated robot data: <i>Action-only</i>
+          (no motion prediction), <i>Separate Heads</i> (independent decoder heads), and <i>Dense Attention</i>
+          (full dense attention at matched parameter count and training budget). Jointly predicting motion
+          alongside actions is essential: Action-only trails UMA by a wide margin, especially on tool use,
+          where coupled object-action dynamics dominate. Separate Heads improves over Action-only but remains
+          slightly worse on average, indicating that a shared head better captures motion-action coupling.
+          Dense Attention underperforms at matched budget, showing that the structured attention facilitates
+          information fusion.
+        </p>
+        <div class="clear"></div>
+        <figure class="figure-float-right">
+          <img src="static/images/scale_bar_figure.png" alt="Scaling behavior: average success rate improves with both data scale (50% vs 100%) and parameter scale (300M vs 600M).">
+          <p class="figure-caption">
+            <b>Scaling behavior</b> with training data and model size.
+          </p>
+        </figure>
+        <p>
+          We evaluate the scalability of UMA by varying both the amount of training data and the model size,
+          reporting the average success rate over the simulated tasks (100 trials each). Both data scale and
+          parameter scale contribute to performance, with the full-data 600M-parameter model achieving the
+          strongest result.
+        </p>
+        <div class="clear"></div>
+      </div>
+
+      <!-- BibTeX -->
+      <div class="tagline" id="bibtex">BibTeX</div>
+      <!-- Placeholder: replace with the camera-ready entry. -->
+      <div class="bibtex-code">
+        <pre><code id="bibtex-text">@article{anonymous2026uma,
   title   = {Unified Motion-Action Modeling for Heterogeneous Robot Learning},
   author  = {Anonymous Authors},
-  journal = {Under review},
+  journal = {OpenReview},
   year    = {2026}
 }</code></pre>
       </div>
-    </div>
-  </section>
-  -->
 
-</main>
+    <!-- End of main content -->
+    </main>
 
-<footer class="footer">
-  <div class="container">
-    <p>By authors of UMA &middot; Under review.</p>
+    <footer class="footer">
+      By authors of UMA &middot; Under review. Website template adapted from
+      <a href="https://relic-locoman.github.io/" target="_blank">ReLIC</a>.
+    </footer>
   </div>
-</footer>
 
-<script src="static/js/main.js"></script>
+  <script src="static/js/main.js"></script>
 </body>
 </html>
