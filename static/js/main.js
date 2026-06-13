@@ -67,48 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Horizontal scroll buttons for overflowing galleries
-  const galleries = [
-    {
-      sectionId: 'gallery-section-zeroshot',
-      galleryInnerId: 'zeroShotGallery',
-      scrollLeftBtnId: 'scrollLeftBtnZeroShot',
-      scrollRightBtnId: 'scrollRightBtnZeroShot'
-    },
-    {
-      sectionId: 'gallery-section-dynamics',
-      galleryInnerId: 'dynamicsGallery',
-      scrollLeftBtnId: 'scrollLeftBtnDynamics',
-      scrollRightBtnId: 'scrollRightBtnDynamics'
-    },
-    {
-      sectionId: 'gallery-section-additional',
-      galleryInnerId: 'additionalTasks',
-      scrollLeftBtnId: 'scrollLeftBtnAdditional',
-      scrollRightBtnId: 'scrollRightBtnAdditional'
-    }
-  ];
-
-  galleries.forEach((galleryConfig) => {
-    const gallerySection = document.getElementById(galleryConfig.sectionId);
-    if (!gallerySection) return;
-
-    const galleryContainer = gallerySection.querySelector('.video-gallery-container');
-    const galleryInner = document.getElementById(galleryConfig.galleryInnerId);
-    const scrollLeftBtn = document.getElementById(galleryConfig.scrollLeftBtnId);
-    const scrollRightBtn = document.getElementById(galleryConfig.scrollRightBtnId);
-
-    if (galleryContainer && galleryInner && scrollLeftBtn && scrollRightBtn) {
-      const scrollAmount = (galleryInner.firstElementChild?.offsetWidth || 300) + 15;
-      scrollLeftBtn.addEventListener('click', () => {
-        galleryContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      });
-      scrollRightBtn.addEventListener('click', () => {
-        galleryContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      });
-    }
-  });
-
   // Copy BibTeX to clipboard (no-op while the BibTeX section is commented out)
   const copyBtn = document.getElementById('copy-bibtex');
   if (copyBtn) {

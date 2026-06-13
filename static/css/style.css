@@ -117,30 +117,26 @@ figure video { display: block; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,.1
   padding: 0 4px;
 }
 
-/* VIDEO GALLERY (kept within the text column; overflow scrolls horizontally) */
+/* VIDEO GALLERY (grid within the text column; at most 3 videos per row) */
 .video-gallery-section { margin: 30px 0 40px; }
-.video-gallery-container { box-sizing: border-box; max-width: 100%; overflow-x: auto; scroll-behavior: smooth; }
-.video-gallery-container::-webkit-scrollbar { display: none; }
-.video-gallery { display: flex; gap: 15px; padding: 0 0 10px; width: max-content; margin: 0; }
-.gallery-video { flex: 0 0 auto; height: 280px; width: auto; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.15); background: #fdfaf4; }
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 0 0 10px; }
+.video-grid .gallery-video { width: 100%; height: auto; }
+.gallery-video { border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,.15); background: #fdfaf4; }
+@media (max-width: 1000px) {
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
 
 /* Per-video item with its own caption (caption wraps to the video's width) */
-.video-item { display: flex; flex-direction: column; flex: 0 0 auto; }
+.video-item { display: flex; flex-direction: column; }
 .video-item .item-caption { font-family: 'Roboto Mono', monospace; font-size: 13px; color: #555; margin: 8px 4px 0; line-height: 1.5; width: 0; min-width: calc(100% - 8px); }
-
-/* Single video gallery styles */
-.video-gallery-container.single-video .video-gallery { width: 100%; justify-content: center; }
-.video-gallery-container.single-video .gallery-video { height: 480px; flex: 0 0 auto; max-width: 85%; }
 
 /* Centered side-by-side layout for two-item video sections (no horizontal scroll) */
 .video-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 0; padding: 0 0 10px; }
 .video-row .video-item { flex: 1 1 0; min-width: 280px; }
 .video-row .gallery-video { width: 100%; height: auto; }
-
-.gallery-nav { background: rgba(40,40,40,.8); color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font: 700 20px/35px sans-serif; cursor: pointer; margin: 0 5px; }
-.gallery-nav:hover { background: #000; }
-.gallery-caption-container { margin: 12px 0 0; padding: 0 4px; display: flex; align-items: flex-start; justify-content: flex-start; gap: 10px; }
-.figure-caption.gallery-caption { flex: 1; margin: 0; text-align: left; font-family: 'Roboto Mono', monospace; font-size: 14px; color: #555; }
 
 .section { font-size: 20px; line-height: 1.7; margin: 0 0 40px; text-align: left; }
 
@@ -176,7 +172,6 @@ figure video { display: block; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,.1
 }
 
 @media (max-width: 700px) {
-  .gallery-video { height: 200px; }
   .section { font-size: 17px; }
   .quick-links a { margin: 0 14px; }
 }
