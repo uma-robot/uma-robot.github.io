@@ -17,7 +17,7 @@
   <div id="content" style="display:block;">
 
     <!-- HERO -->
-    <header class="full-page-image" id="hero">
+    <!-- <header class="full-page-image" id="hero">
       <video id="bg-video" preload="auto" autoplay muted playsinline loop poster="static/posters/folding_zero-shot.jpg">
         <source src="static/videos/zero-shot/folding.mp4" type="video/mp4">
       </video>
@@ -25,11 +25,10 @@
       <div class="bottom-overlay" style="padding:0 24px;">
         <h1>UMA<br>Unified Motion-Action Modeling for Heterogeneous Robot Learning</h1>
       </div>
-      <!-- Scroll indicator -->
       <div class="scroll-indicator" onclick="scrollToContent()">
         ↓
       </div>
-    </header>
+    </header> -->
 
     <!-- MAIN CONTENT BODY -->
     <main class="main-content">
@@ -123,7 +122,7 @@
       <!-- ================= RESULTS ================= -->
 
       <!-- Zero-shot visuomotor control: qualitative + quantitative -->
-      <div class="tagline" id="zero-shot">Results: Zero-Shot Visuomotor Control</div>
+      <div class="tagline" id="zero-shot">Visuomotor Control</div>
       <div class="section">
         <p>
           Pretrained on data that never overlaps the real-world test environments, UMA outperforms the
@@ -156,14 +155,14 @@
       </div>
 
       <figure class="figure-chart">
-        <img src="static/images/zero_shot_visuomotor_control_avg.png" alt="Average zero-shot visuomotor control success rates: UMA at 83.3% outperforms UVA, COIL, and data-ablated variants.">
+        <img src="static/images/zero_shot_visuomotor_control.png" alt="Per-task zero-shot visuomotor control success rates on Insertion, Sweeping, and Folding: UMA outperforms UVA, COIL, and the data-ablated UMA variants.">
         <p class="figure-caption">
-          Success rates for motion-conditioned visuomotor control, averaged over the three evaluation tasks (20 trials each).
+          Success rates for motion-conditioned visuomotor control on each of the three evaluation tasks (20 trials each).
         </p>
       </figure>
 
       <!-- Dynamics: qualitative + quantitative -->
-      <div class="tagline" id="dynamics">Results: Dynamics Prediction</div>
+      <div class="tagline" id="dynamics">Dynamics Prediction</div>
       <div class="section">
         <p>
           Given a candidate action sequence, the same model predicts the resulting object motion. UMA reduces motion-prediction MSE from 0.054 (PointWorld) to 0.042,
@@ -212,30 +211,13 @@
       </figure>
 
       <!-- Few-shot adaptation: qualitative + quantitative -->
-      <div class="tagline" id="few-shot">Results: Few-Shot Adaptation</div>
+      <div class="tagline" id="few-shot">Few-Shot Adaptation</div>
       <div class="section">
         <p>
           UMA adapts to a new task by optimizing only the task latent on 25 demonstrations while keeping all
           other parameters frozen. From action-free human videos alone, it outperforms UVA by approximately
           25 percentage points on every task.
         </p>
-      </div>
-
-      <div class="video-gallery-section" id="gallery-section-fewshot">
-        <div class="video-row" id="fewShotGallery">
-          <div class="video-item">
-            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/human_folding_few-shot_2x.jpg">
-              <source src="static/videos/few-shot/human_folding_2x.mp4" type="video/mp4">
-            </video>
-            <p class="item-caption"><b>Adapted from human videos.</b> Folding with motion supervision</p>
-          </div>
-          <div class="video-item">
-            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/robot_insertion_few-shot_2x.jpg">
-              <source src="static/videos/few-shot/robot_insertion_2x.mp4" type="video/mp4">
-            </video>
-            <p class="item-caption"><b>Adapted from robot demos.</b> Insertion with motion and action supervision</p>
-          </div>
-        </div>
       </div>
 
       <figure class="figure-chart">
@@ -245,38 +227,97 @@
         </p>
       </figure>
 
-      <!-- Flexible task specification -->
-      <div class="tagline" id="task-specification">Results: Multimodal Task Conditioning</div>
-      <div class="section">
-        <figure>
-          <img src="static/images/task_specification.png" alt="Left: language encoder mapping a text instruction through SigLIP2 and a transformer to task tokens. Right: goal-conditioned pipeline using SAM 3 segmentation and RoMa v2 matching to build a start-to-end reference motion.">
-        </figure>
-        <p>
-          Since UMA is trained with a semantically meaningful task encoder with contrastive loss, replacing the task latent conditions the same pretrained model on alternative task specifications without fine-tuning: language-conditioned control derives the task latent from a text
-          instruction via a SigLIP&nbsp;2 text encoder, and goal-conditioned control converts a goal image
-          into a sparse start-to-end reference motion via SAM&nbsp;3 segmentation and RoMaV2 point matching.
-        </p>
-      </div>
-
-      <div class="video-gallery-section" id="gallery-section-conditioned">
-        <div class="video-row" id="conditionedGallery">
+      <!-- Adapted from human videos: demonstrations (left) + rollout (right) -->
+      <div class="section-subtitle">Adapted from human videos</div>
+      <div class="video-gallery-section">
+        <div class="video-row">
           <div class="video-item">
-            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/goal_mug_conditioned_2x.jpg">
-              <source src="static/videos/conditioned/goal_mug_2x.mp4" type="video/mp4">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/human_demo_few-shot.jpg">
+              <source src="static/videos/few-shot/human-demo.mp4" type="video/mp4">
             </video>
-            <p class="item-caption"><b>Goal-conditioned.</b> Move the mug to the shelf, specified by a goal image</p>
+            <p class="item-caption"><b>Demonstrations.</b> Action-free human folding videos (4 of 25 shown)</p>
           </div>
           <div class="video-item">
-            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/language_cable_conditioned_2x.jpg">
-              <source src="static/videos/conditioned/language_cable_2x.mp4" type="video/mp4">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/human_folding_few-shot_2x.jpg">
+              <source src="static/videos/few-shot/human_folding_2x.mp4" type="video/mp4">
             </video>
-            <p class="item-caption"><b>Language-conditioned.</b> &ldquo;Put the cable in the container&rdquo;</p>
+            <p class="item-caption"><b>Rollout.</b> Folding adapted with motion supervision</p>
           </div>
         </div>
       </div>
 
+      <!-- Adapted from robot demos: demonstrations (left) + rollout (right) -->
+      <div class="section-subtitle">Adapted from robot demos</div>
+      <div class="video-gallery-section">
+        <div class="video-row">
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/robot_demo_few-shot.jpg">
+              <source src="static/videos/few-shot/robot-demo.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Demonstrations.</b> Robot insertion demos (4 of 25 shown)</p>
+          </div>
+          <div class="video-item">
+            <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/robot_insertion_few-shot_2x.jpg">
+              <source src="static/videos/few-shot/robot_insertion_2x.mp4" type="video/mp4">
+            </video>
+            <p class="item-caption"><b>Rollout.</b> Insertion adapted with motion and action supervision</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flexible task specification -->
+      <div class="tagline" id="task-specification">Multimodal Task Conditioning</div>
+      <div class="section">
+        <p>
+          Since UMA is trained with a semantically meaningful task encoder under a contrastive loss,
+          simply replacing the task latent conditions the same pretrained model on a different task
+          specification &mdash; with no fine-tuning. We show two modalities below: following a text
+          instruction, and reaching a goal image.
+        </p>
+      </div>
+
+      <!-- Language Instruction: how it works (left) + rollout (right) -->
+      <div class="section-subtitle">Language Instruction</div>
+      <div class="section">
+        <p>
+          A SigLIP&nbsp;2 text encoder embeds the language instruction, and a transformer maps those tokens into the task token that conditions the model.
+        </p>
+      </div>
+      <div class="conditioning-row">
+        <figure class="cond-diagram">
+          <img src="static/images/task_instruction.png" alt="Language instruction pipeline: an language instruction is encoded by a SigLIP 2 text encoder, and a transformer maps the resulting tokens into the task token that conditions the model.">
+          <!-- <figcaption>A text instruction is embedded by a SigLIP&nbsp;2 text encoder; a transformer maps those tokens into the task token that conditions the model.</figcaption> -->
+        </figure>
+        <div class="cond-video video-item">
+          <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/language_cable_conditioned_2x.jpg">
+            <source src="static/videos/conditioned/language_cable_2x.mp4" type="video/mp4">
+          </video>
+          <p class="item-caption">&ldquo;Put the cable in the container.&rdquo;</p>
+        </div>
+      </div>
+
+      <!-- Goal reaching: how it works (left) + rollout (right) -->
+      <div class="section-subtitle">Goal Reaching</div>
+      <div class="section">
+        <p>
+          SAM&nbsp;3 segments the manipulated object in the initial and goal images, RoMa&nbsp;V2 matches points across them into a start-to-end reference motion, which is encoded into the task token that conditions the model.
+        </p>
+      </div>
+      <div class="conditioning-row">
+        <figure class="cond-diagram">
+          <img src="static/images/task_goal.png" alt="Goal-reaching pipeline: SAM 3 segments the manipulated object in the initial and goal images, RoMa V2 matches points across them to recover a start-to-end reference motion, which is encoded into the task token.">
+          <!-- <figcaption>SAM&nbsp;3 segments the object in the initial and goal images, RoMa&nbsp;V2 matches points across them into a start-to-end reference motion, which is encoded into the task token.</figcaption> -->
+        </figure>
+        <div class="cond-video video-item">
+          <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/goal_mug_conditioned_2x.jpg">
+            <source src="static/videos/conditioned/goal_mug_2x.mp4" type="video/mp4">
+          </video>
+          <p class="item-caption">Shelf the mug.</p>
+        </div>
+      </div>
+
       <!-- Additional tasks -->
-      <div class="tagline" id="additional">Results: UMA in the Wild</div>
+      <div class="tagline" id="additional">UMA in the Wild</div>
       <div class="section">
         <p>
           UMA generalizes across everyday objects and skills beyond the main evaluation suite.
@@ -285,6 +326,24 @@
 
       <div class="video-gallery-section" id="gallery-section-additional">
         <div class="video-grid" id="additionalTasks">
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/insertion_additional_2x.jpg">
+                <source src="static/videos/additional/insertion_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Inserting the utensil</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/sweeping_additional_2x.jpg">
+                <source src="static/videos/additional/sweeping_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Sweeping the paper</p>
+            </div>
+            <div class="video-item">
+              <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/folding_additional_2x.jpg">
+                <source src="static/videos/additional/folding_2x.mp4" type="video/mp4">
+              </video>
+              <p class="item-caption">Folding the jean</p>
+            </div>
             <div class="video-item">
               <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/mug_additional_2x.jpg">
                 <source src="static/videos/additional/mug_2x.mp4" type="video/mp4">
@@ -325,7 +384,7 @@
       </div>
 
       <!-- Ablation & scaling -->
-      <div class="tagline" id="ablation-scaling">Results: Ablation &amp; Scaling</div>
+      <div class="tagline" id="ablation-scaling">Ablation &amp; Scaling</div>
       <div class="section">
         <figure class="figure-float-left figure-float-sm">
           <img src="static/images/ablation.png" alt="Model design ablation: average success rates for Dense Attention, Action-only, Separate Heads, and UMA.">
@@ -355,6 +414,22 @@
         <div class="clear"></div>
       </div>
 
+      <!-- Failure analysis -->
+      <div class="tagline" id="failure-analysis">Failure Analysis</div>
+      <div class="section">
+        <p>
+          Across real-world evaluations, 82% of failures occur during action execution and only 18% during grasping. UMA reliably infers the correct task intent and grasp, but loses precision over the action
+          rollout &mdash; pointing to larger-scale motion-action paired data, rather than richer task
+          specification, as the most direct way to close the remaining gap.
+        </p>
+      </div>
+      <figure class="figure-narrow">
+        <img src="static/images/failure_analysis.png" alt="Failure analysis: grasping failures account for 18.33% of errors and execution failures for 81.67%, illustrated with a grasping failure on a brush and an execution failure inserting a utensil into a cup.">
+        <p class="figure-caption">
+          Breakdown of failure cases by error type.
+        </p>
+      </figure>
+
       <!-- BibTeX -->
       <div class="tagline" id="bibtex">BibTeX</div>
       <!-- Placeholder: replace with the camera-ready entry. -->
@@ -371,8 +446,9 @@
     </main>
 
     <footer class="footer">
-      By authors of UMA &middot; Under review. Website template adapted from
-      <a href="https://relic-locoman.github.io/" target="_blank">ReLIC</a>.
+      By authors of UMA &middot; Under review. Website template adapted from 
+      <a href="https://www.videomimic.net/" target="_blank">VideoMimic</a>, 
+      <a href="https://transic-robot.github.io/" target="_blank">TRANSIC</a>, and <a href="https://relic-locoman.github.io/" target="_blank">ReLIC</a>.
     </footer>
   </div>
 

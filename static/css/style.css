@@ -63,10 +63,11 @@ header.full-page-image .bottom-overlay h1 {
   font-weight: 400;
   line-height: 1.2;
   margin: 60px 0 30px;
+  text-align: center;
 }
 
 /* AUTHORS */
-.authors { font-family: 'Roboto Mono', monospace; font-size: 16px; color: #333; line-height: 1.6; margin: 0 0 20px; text-align: left; }
+.authors { font-family: 'Roboto Mono', monospace; font-size: 16px; color: #333; line-height: 1.6; margin: 0 0 20px; text-align: center; }
 .authors .affiliation { font-weight: 600; font-size: 16px; color: #111; }
 .authors .equal-contribution { font-size: 14px; color: #555; }
 .authors a { color: inherit; text-decoration: none; }
@@ -145,6 +146,18 @@ figure video { display: block; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,.1
 .video-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin: 0; padding: 0 0 10px; }
 .video-row .video-item { flex: 1 1 0; min-width: 280px; }
 .video-row .gallery-video { width: 100%; height: auto; }
+
+/* Task-conditioning: "how it works" diagram on the left, rollout video on the right */
+.conditioning-row { display: flex; gap: 32px; align-items: center; justify-content: center; margin: 12px 0 40px; }
+.conditioning-row .cond-diagram { flex: 1 1 0; min-width: 0; margin: 0; }
+.conditioning-row .cond-diagram img { width: 100%; height: auto; }
+.conditioning-row .cond-diagram figcaption { font-family: 'Roboto Mono', monospace; font-size: 13px; color: #555; margin-top: 10px; line-height: 1.5; text-align: center; }
+.conditioning-row .cond-video { flex: 1.25 1 0; min-width: 0; }
+.conditioning-row .cond-video .gallery-video { width: 100%; height: auto; }
+/* Stack only on genuinely small screens */
+@media (max-width: 600px) {
+  .conditioning-row { flex-direction: column; gap: 16px; }
+}
 
 .section { font-size: 20px; line-height: 1.7; margin: 0 0 40px; text-align: left; }
 

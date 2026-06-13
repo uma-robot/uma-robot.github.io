@@ -1,22 +1,4 @@
-// Hero video initialization
-function startHero() {
-  const vid = document.getElementById('bg-video');
-  if (!vid) return;
-  vid.play().catch(() => {});
-  vid.style.opacity = 1;
-}
-
-// Smooth scroll to content (used by the hero scroll indicator)
-function scrollToContent() {
-  const content = document.querySelector('.main-content');
-  if (content) {
-    content.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
 document.addEventListener('DOMContentLoaded', function () {
-  startHero();
-
   // Gallery videos: play when visible, pause when scrolled away
   if ('IntersectionObserver' in window) {
     const videoObserver = new IntersectionObserver((entries) => {
