@@ -194,8 +194,18 @@
         </div>
       </div>
 
-      <figure class="figure-chart">
-        <img src="static/images/zero_shot_motion_prediction_avg.png" alt="Average zero-shot dynamics prediction error (mean squared error): UMA at 0.042 outperforms PointWorld at 0.054; removing simulated data degrades error to 0.208.">
+      <figure class="result-table-wrap">
+        <table class="result-table">
+          <thead>
+            <tr><th>Method</th><th>MSE&nbsp;&darr;</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>PointWorld</td><td>0.054</td></tr>
+            <tr><td>UMA w/o Sim</td><td>0.208</td></tr>
+            <tr><td>UMA w/o Human</td><td>0.044</td></tr>
+            <tr class="is-ours"><td>UMA (Ours)</td><td>0.042</td></tr>
+          </tbody>
+        </table>
         <p class="figure-caption">
           Mean squared error (MSE) of predicted object motion, averaged across real-world tasks; lower is better.
         </p>
