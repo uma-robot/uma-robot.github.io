@@ -418,12 +418,14 @@
       <div class="tagline" id="failure-analysis">Failure Analysis</div>
       <div class="section">
         <p>
-          Across real-world evaluations, 82% of failures occur during action execution and only 18% during grasping. UMA reliably infers the correct task intent and grasp, but loses precision over the action
-          rollout &mdash; pointing to larger-scale motion-action paired data, rather than richer task
-          specification, as the most direct way to close the remaining gap.
+          Execution failures dominate at 82% of total errors, with grasping accounting for the remaining 18%.
+          UMA thus reliably identifies the correct task intent and grasp configuration, but loses precision
+          during the action rollout. This aligns with our finding that simulation drives motion-action coupling,
+          pointing toward further scaling of motion-action paired data, rather than richer task specification, as
+          the most direct path to closing the remaining gap.
         </p>
       </div>
-      <figure class="figure-narrow">
+      <figure class="figure-chart" style="max-width: 400px;">
         <img src="static/images/failure_analysis.png" alt="Failure analysis: grasping failures account for 18.33% of errors and execution failures for 81.67%, illustrated with a grasping failure on a brush and an execution failure inserting a utensil into a cup.">
         <p class="figure-caption">
           Breakdown of failure cases by error type.
