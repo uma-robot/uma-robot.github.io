@@ -150,7 +150,7 @@ figure video { display: block; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,.1
 /* Task-conditioning: "how it works" diagram on the left, rollout video on the right */
 .conditioning-row { display: flex; gap: 32px; align-items: center; justify-content: center; margin: 12px 0 40px; }
 .conditioning-row .cond-diagram { flex: 1 1 0; min-width: 0; margin: 0; }
-.conditioning-row .cond-diagram img { width: 100%; height: auto; }
+.conditioning-row .cond-diagram img { width: 100%; height: auto; box-shadow: none; border-radius: 0; }
 .conditioning-row .cond-diagram figcaption { font-family: 'Roboto Mono', monospace; font-size: 13px; color: #555; margin-top: 10px; line-height: 1.5; text-align: center; }
 .conditioning-row .cond-video { flex: 1.25 1 0; min-width: 0; }
 .conditioning-row .cond-video .gallery-video { width: 100%; height: auto; }

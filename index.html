@@ -87,10 +87,8 @@
       <div class="section">
         <p>
           UMA represents object motion as 3D keypoints sampled on object surfaces and tracked across time: a structured yet generic representation obtainable from monocular video, and independent of any specific embodiment. 
-          During pre-training,
-          a flow matching objective predicts randomly masked object motion and robot actions, conditioned on a
-          task latent and visual observation, while a contrastive loss on the task encoder keeps the task
-          representation semantically consistent, enabling versatile task conditioning and adaptation at deployment.
+          We bridge visuomotor control and dynamics modeling by jointly supervising randomly masked object motion and robot actions with a flow-matching loss. To enable versatile task conditioning and adaptation at deployment, we employ a contrastive loss to additionally supervise the task encoder, keeping the task
+          token semantically consistent between spatial variations.
         </p>
         <figure>
           <img src="static/images/architecture.png" alt="UMA architecture showing masked flow matching over object motion and action tokens, alongside a task encoder trained with flow matching and contrastive objectives.">
@@ -312,7 +310,7 @@
           <video class="gallery-video" muted playsinline loop preload="none" poster="static/posters/goal_mug_conditioned_2x.jpg">
             <source src="static/videos/conditioned/goal_mug_2x.mp4" type="video/mp4">
           </video>
-          <p class="item-caption">Shelf the mug.</p>
+          <p class="item-caption">Shelving the mug</p>
         </div>
       </div>
 
