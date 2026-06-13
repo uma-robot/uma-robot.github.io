@@ -324,14 +324,10 @@
           </p>
         </figure>
         <p>
-          We evaluate three architecture variants trained on simulated robot data: <i>Action-only</i>
+          We evaluate three architecture variants of UMA trained on simulated robot data: <i>Action-only</i>
           (no motion prediction), <i>Separate Heads</i> (independent decoder heads), and <i>Dense Attention</i>
-          (full dense attention at matched parameter count and training budget). Jointly predicting motion
-          alongside actions is essential: Action-only trails UMA by a wide margin, especially on tool use,
-          where coupled object-action dynamics dominate. Separate Heads improves over Action-only but remains
-          slightly worse on average, indicating that a shared head better captures motion-action coupling.
-          Dense Attention underperforms at matched budget, showing that the structured attention facilitates
-          information fusion.
+          (full dense attention at same compute budget). We find that jointly predicting motion
+          alongside actions is essential, a shared head better captures motion-action coupling, and the structured attention facilitates effective learning of spatial-temporal relationships.
         </p>
         <div class="clear"></div>
         <figure class="figure-float-right">
